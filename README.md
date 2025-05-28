@@ -1,7 +1,3 @@
-# Let it be. let's start the documentation for the whole project. I ran docker-compose up --build first to download all dependencies but later I only do docker-compose up.
-
-Absolutely! Here’s a **clear, professional README.md** template for your project, tailored to your setup and workflow. You can copy this to your project root as `README.md` and adjust details as you like.
-
 ---
 
 # Deep Art: Neural Style Transfer Web App
@@ -22,7 +18,7 @@ Deep Art is a full-stack, containerized web application for neural style transfe
 
 ## 🖼️ Demo
 
-![screenshot here if you want]
+![image](https://github.com/user-attachments/assets/13676f29-8812-4917-89fe-af748bcd9f78)
 
 ---
 
