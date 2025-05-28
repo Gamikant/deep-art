@@ -8,6 +8,9 @@ function App() {
   const [previewUrl, setPreviewUrl] = useState(null);
   const [style, setStyle] = useState(null);
   const [resultUrl, setResultUrl] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -28,26 +31,32 @@ function App() {
   // Placeholder for backend integration
   const handleStylize = async () => {
     if (!image || !style) return;
+    setLoading(true);
+    setError('');
+    setResultUrl(null);
+
     const formData = new FormData();
     formData.append('image', image);
     formData.append('style', style);
 
-    setResultUrl(null); // Clear previous result
     try {
       const response = await fetch('/api/transfer', {
         method: 'POST',
         body: formData,
       });
       if (!response.ok) {
-        alert('Error processing image.');
+        setError('Error processing image. Please try again.');
+        setLoading(false);
         return;
       }
       const blob = await response.blob();
       setResultUrl(URL.createObjectURL(blob));
     } catch (err) {
-      alert('Failed to connect to backend.');
+      setError('Failed to connect to backend.');
     }
+    setLoading(false);
   };
+
 
 
   return (
@@ -59,18 +68,30 @@ function App() {
       </div>
       <button
         onClick={handleStylize}
-        disabled={!image || !style}
+        disabled={!image || !style || loading}
         style={{
           padding: "10px 24px",
           background: "#007bff",
           color: "#fff",
           border: "none",
           borderRadius: 6,
-          cursor: image && style ? "pointer" : "not-allowed",
+          cursor: (!image || !style || loading) ? "not-allowed" : "pointer",
+          opacity: loading ? 0.6 : 1,
         }}
       >
-        Stylize!
+        {loading ? "Stylizing..." : "Stylize!"}
       </button>
+      {loading && (
+        <div style={{ margin: "20px 0", textAlign: "center" }}>
+          <span className="spinner" style={{ fontSize: 32 }}>⏳</span>
+          <div>Stylizing your image...</div>
+        </div>
+      )}
+      {error && (
+        <div style={{ color: "red", margin: "20px 0", textAlign: "center" }}>
+          {error}
+        </div>
+      )}
       <ResultDisplay resultUrl={resultUrl} />
     </div>
   );

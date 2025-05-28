@@ -28,6 +28,15 @@
   color: #61dafb;
 }
 
+.spinner {
+  display: inline-block;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  100% { transform: rotate(360deg); }
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
